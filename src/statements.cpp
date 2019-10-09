@@ -267,8 +267,10 @@ void ParentBlockStatement::Render(OutStream& os, RenderContext& values)
     RenderContext innerContext = values.Clone(m_isScoped);
     bool found = false;
     auto parentTplVal = values.FindValue("$$__parent_template", found);
-    if (!found)
+    if (!found) {
+        m_mainBody->Render(os, values);
         return;
+    }
 
     bool isConverted = false;
     auto parentTplsList = ConvertToList(parentTplVal->second, isConverted);
